@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f6f2">
+    <meta name="description" content="A polished, relaxing browser-based Hangman word game.">
+    <title>Wordplay — Hangman</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell min-h-screen">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Wordplay home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 36 36" fill="none">
+              <path d="M8 8h20v20H8z" stroke="currentColor" stroke-width="2"/>
+              <path d="M13 14h10M13 18h7M13 22h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="brand-name">wordplay<span>.</span></span>
+        </a>
+        <div class="topbar-right">
+          <span class="online-indicator"><span></span> READY FOR A ROUND</span>
+          <span class="topbar-divider" aria-hidden="true"></span>
+          <button class="icon-button" id="help-button" type="button" aria-label="How to play" title="How to play">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M9.7 9a2.35 2.35 0 1 1 3.95 1.72c-.9.8-1.65 1.2-1.65 2.28M12 16.5h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="intro">
+          <div class="eyebrow"><span class="eyebrow-line"></span> THE CLASSIC, REIMAGINED</div>
+          <h1>A little word<br class="mobile-break"> <span>play.</span></h1>
+          <p>Find the hidden word, one letter at a time.</p>
+        </section>
+
+        <section class="game-layout" aria-label="Hangman game">
+          <article class="game-card">
+            <div class="card-topline">
+              <div class="round-label">
+                <span class="round-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none">
+                    <path d="M3.5 5.5h13M3.5 10h13M3.5 14.5h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    <circle cx="15" cy="14.5" r="2" fill="currentColor"/>
+                  </svg>
+                </span>
+                <span>WORD PUZZLE</span>
+              </div>
+              <div class="topline-actions">
+                <button class="hint-button" id="hint-button" type="button" aria-describedby="hint-count">
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M10 2.5a5 5 0 0 0-3 9v1.5a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V11.5a5 5 0 0 0-3-9ZM8 17h4M8.5 14.5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Hint (<span id="hint-count">3</span>)
+                </button>
+                <button class="new-game-button" id="new-game-button" type="button">
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M16.2 8A6.4 6.4 0 0 0 5.1 5.2L3.8 6.5M3.8 6.5V3.8m0 2.7h2.7M3.8 12A6.4 6.4 0 0 0 14.9 14.8l1.3-1.3m0 0v2.7m0-2.7h-2.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  New game
+                </button>
+              </div>
+            </div>
+
+            <div class="word-area">
+              <div class="word-meta">
+                <span id="word-hint">A word is waiting to be discovered</span>
+                <span class="word-length" id="word-length">— LETTERS</span>
+              </div>
+              <div class="word-slots" id="word-slots" aria-label="Hidden word" aria-live="polite"></div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="keyboard-section">
+              <div class="keyboard-heading">
+                <span>CHOOSE A LETTER</span>
+                <span class="keyboard-instruction">or use your keyboard</span>
+              </div>
+              <div class="keyboard" id="keyboard" role="group" aria-label="Letter keyboard"></div>
+              <div class="feedback" id="feedback" role="status" aria-live="polite">
+                <span class="feedback-dot" aria-hidden="true"></span>
+                <span>Pick a letter to begin</span>
+              </div>
+            </div>
+          </article>
+
+          <aside class="side-column">
+            <section class="drawing-card" aria-label="Hangman drawing">
+              <div class="side-card-heading">
+                <div>
+                  <span class="section-kicker">THE GALLERY</span>
+                  <h2>Chances</h2>
+                </div>
+                <span class="attempt-count" id="attempt-count"><strong>6</strong><span> / 6</span></span>
+              </div>
+              <div class="gallows-wrap">
+                <svg class="gallows" viewBox="0 0 220 220" role="img" aria-labelledby="gallows-title">
+                  <title id="gallows-title">Hangman drawing</title>
+                  <path class="gallows-line" d="M42 190h140M70 190V30h78v20"/>
+                  <path class="gallows-line" d="M70 58l32-28"/>
+                  <circle class="person-part" data-stage="1" cx="148" cy="69" r="19"/>
+                  <path class="person-part" data-stage="2" d="M148 88v45"/>
+                  <path class="person-part" data-stage="3" d="M148 101l-26 22"/>
+                  <path class="person-part" data-stage="4" d="M148 101l26 22"/>
+                  <path class="person-part" data-stage="5" d="M148 133l-24 33"/>
+                  <path class="person-part" data-stage="6" d="M148 133l24 33"/>
+                  <path class="base-accent" d="M38 190h148"/>
+                </svg>
+                <div class="drawing-caption" id="drawing-caption">A fresh start. You’ve got this.</div>
+              </div>
+              <div class="lives-row" id="lives-row" aria-label="6 attempts remaining"></div>
+              <div class="lives-label"><span>REMAINING CHANCES</span><span id="lives-text">6 chances</span></div>
+            </section>
+
+            <section class="letters-card">
+              <div class="side-card-heading letters-heading">
+                <div>
+                  <span class="section-kicker">YOUR JOURNEY</span>
+                  <h2>Letters tried</h2>
+                </div>
+                <span class="letters-total" id="letters-total">0</span>
+              </div>
+              <div class="letter-history" id="letter-history">
+                <span class="history-empty">Your guesses will appear here</span>
+              </div>
+            </section>
+
+            <div class="tip-card">
+              <span class="tip-sparkle" aria-hidden="true">✳</span>
+              <p><strong>Little tip</strong><br>Start with a vowel. They show up in almost every word.</p>
+            </div>
+          </aside>
+        </section>
+        <footer class="page-footer">
+          <span>MADE FOR CURIOUS MINDS</span>
+          <span class="footer-star" aria-hidden="true">✳</span>
+          <span>ONE LETTER AT A TIME</span>
+        </footer>
+      </main>
+    </div>
+
+    <dialog class="help-dialog" id="help-dialog" aria-labelledby="help-title">
+      <div class="dialog-content">
+        <button class="dialog-close" id="close-help" type="button" aria-label="Close instructions">×</button>
+        <span class="section-kicker">HOW TO PLAY</span>
+        <h2 id="help-title">Think of a letter.</h2>
+        <p>Guess the hidden word by choosing one letter at a time. Each correct guess reveals every matching spot. You get six chances to solve it.</p>
+        <p>Choose letters on screen or use your keyboard. A letter can only be guessed once, and the word is revealed when the round ends.</p>
+        <button class="dialog-action" id="got-it" type="button">Got it</button>
+      </div>
+    </dialog>
+    <div class="sr-only" id="announcement" aria-live="assertive"></div>
+  </body>
+</html>
